@@ -6,4 +6,7 @@ So, I urge you all to stay tuned with me on this journey and if you are recruite
 and like it I would be more than happy if I could help you build something really great and
 impactful.
 
-![App Logo](assets/icons/LendBridge.png)
+![App Logo](assets/icons/app_icon.png)
+
+This is the logo of Lend Bridge which tells you that we are here for bridging the gap between the
+users who needs small loans for some urgent works.

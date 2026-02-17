@@ -1,7 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lend_bridge/Constants/Firebase_Constants.dart';
-import 'package:lend_bridge/routes/app_router.dart';
+import 'package:lend_bridge/Splash_Screen/splash_screen_view.dart';
+import 'package:lend_bridge/Splash_Screen/splash_screen_view_model.dart';
+import 'package:lend_bridge/User_Model/user_data_provider.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +35,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(routerConfig: goRouter);
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserDataProvider()),
+
+        ChangeNotifierProxyProvider<UserDataProvider, SplashScreenViewModel>(
+          create: (context) => SplashScreenViewModel(
+            Provider.of<UserDataProvider>(context, listen: false),
+          ),
+          update: (_, userProvider, __) => SplashScreenViewModel(userProvider),
+        ),
+      ],
+
+      child: MaterialApp(title: 'Lend Bridge', home: SplashScreenView()),
+    );
   }
 }
