@@ -25,7 +25,11 @@ class _SplashScreenViewState extends State<SplashScreenView> {
 
     await Future.delayed(Duration(seconds: 2));
 
+    if(!mounted) return;
+
     String route = await viewModel.checkAuthStatus();
+
+    if(!mounted) return;
 
     if (route == 'home') {
       print('User exists');

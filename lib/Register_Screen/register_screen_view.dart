@@ -1,50 +1,86 @@
 import 'package:flutter/material.dart';
-import 'package:lend_bridge/Login_Screen/login_screen_view_model.dart';
-import 'package:lend_bridge/Register_Screen/register_screen_view.dart';
+import 'package:lend_bridge/Login_Screen/login_screen_view.dart';
+import 'package:lend_bridge/Register_Screen/register_screen_view_model.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreenView extends StatefulWidget {
-  const LoginScreenView({super.key});
+class RegisterScreenView extends StatefulWidget {
+  const RegisterScreenView({super.key});
 
   @override
-  State<LoginScreenView> createState() => _LoginScreenViewState();
+  State<RegisterScreenView> createState() => _RegisterScreenViewState();
 }
 
-class _LoginScreenViewState extends State<LoginScreenView> {
+class _RegisterScreenViewState extends State<RegisterScreenView> {
   final emailController = TextEditingController();
+  final nameController = TextEditingController();
+  final phoneController = TextEditingController();
   final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
-      body: Consumer<LoginScreenViewModel>(
+
+      body: Consumer<RegisterScreenViewModel>(
         builder: (context, viewModel, child) {
           return Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.all(20),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Login',
+                  'Register',
                   style: TextStyle(
                     fontSize: 32,
-                    fontWeight: FontWeight.bold,
                     color: Colors.black,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
 
-                Text('Welcome back!', style: TextStyle(fontSize: 16)),
+                Text(
+                  'Excited to have you onboard!',
+                  style: TextStyle(fontSize: 16),
+                ),
 
                 SizedBox(height: 24),
+
+                TextField(
+                  controller: nameController,
+
+                  decoration: InputDecoration(
+                    errorText: viewModel.nameError,
+                    label: Text(
+                      'Name',
+                      style: TextStyle(color: Colors.grey[700]),
+                    ),
+
+                    prefixIcon: Icon(Icons.person_outline, color: Colors.black),
+
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey),
+                    ),
+
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.red),
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 16),
 
                 TextField(
                   controller: emailController,
 
                   decoration: InputDecoration(
                     errorText: viewModel.emailError,
-
                     label: Text(
                       'Email',
                       style: TextStyle(color: Colors.grey[700]),
@@ -72,13 +108,43 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                 SizedBox(height: 16),
 
                 TextField(
+                  controller: phoneController,
+
+                  decoration: InputDecoration(
+                    errorText: viewModel.phoneError,
+                    label: Text(
+                      'Phone',
+                      style: TextStyle(color: Colors.grey[700]),
+                    ),
+
+                    prefixIcon: Icon(Icons.phone_outlined, color: Colors.black),
+
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey),
+                    ),
+
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.red),
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 16),
+
+                TextField(
                   controller: passwordController,
 
                   obscureText: true,
 
                   decoration: InputDecoration(
                     errorText: viewModel.passwordError,
-
                     label: Text(
                       'Password',
                       style: TextStyle(color: Colors.grey[700]),
@@ -112,9 +178,17 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                   onPressed: viewModel.isLoading
                       ? null
                       : () async {
+                          String name = nameController.text.trim();
                           String email = emailController.text.trim();
+                          String phone = phoneController.text.trim();
                           String password = passwordController.text.trim();
-                          await viewModel.isValidFields(email, password);
+
+                          await viewModel.isValidFields(
+                            email,
+                            name,
+                            phone,
+                            password,
+                          );
                         },
 
                   style: ElevatedButton.styleFrom(
@@ -128,7 +202,7 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                   child: viewModel.isLoading
                       ? CircularProgressIndicator(color: Colors.white)
                       : Text(
-                          'Login',
+                          'Register',
                           style: TextStyle(color: Colors.white, fontSize: 20),
                         ),
                 ),
@@ -170,7 +244,7 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Don't have an account? ",
+                      "Already have an account? ",
                       style: TextStyle(fontSize: 12),
                     ),
 
@@ -179,7 +253,7 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                         Navigator.pushReplacement(
                           context,
                           PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => RegisterScreenView(),
+                            pageBuilder: (_, __, ___) => LoginScreenView(),
                             transitionDuration: Duration.zero,
                             reverseTransitionDuration: Duration.zero,
                           ),
@@ -187,7 +261,7 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                       },
 
                       child: Text(
-                        'Register',
+                        'Login',
                         style: TextStyle(color: Colors.blue, fontSize: 12),
                       ),
                     ),

@@ -96,6 +96,7 @@ class LoginScreenViewModel extends ChangeNotifier {
       notifyListeners();
       return;
     } on FirebaseAuthException catch (e) {
+      print("${e.message}");
       _generalError = e.message;
       _isLoading = false;
       notifyListeners();
